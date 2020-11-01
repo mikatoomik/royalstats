@@ -23,6 +23,7 @@ require("channels")
 // ----------------------------------------------------
 
 // External imports
+import "jquery";
 import "bootstrap";
 
 // Internal imports, e.g:

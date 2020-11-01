@@ -1,0 +1,47 @@
+<div class="container">
+<h2>Afficher les membres d'un clan</h2>
+
+<%= form_with(url: search_path, method: "get", local: true) do %>
+  <%= label_tag(:clanTag, "Entrez le tag de votre Clan:") %>
+  <%= text_field_tag(:clanTag) %>
+  <%= submit_tag("Search") %>
+<% end %>
+<p class="h5">pour info ArsTak c'est #2Q89RJG</p>
+
+
+<% if @resp %>
+  <% if !@resp['items'][0].keys.include?('index') %>
+    <table id="results" class="table table_sm table-hover">
+      <thead>
+        <tr>
+          <th>tag</th>
+          <th>nom</th>
+          <th>rôle</th>
+          <th>dernière connection</th>
+          <th>dons (envoyés/reçus)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @resp['items'].each do |element|%>
+          <tr>
+            <td><%= link_to element['tag'], search_path(:memberTag => element['tag'] ) %></td>
+            <td><%= element['name'] %></td>
+            <td><%= element['role'] %></td>
+            <td><%= element['lastSeen'].to_time.strftime("%d %b %y") %></td>
+            <td><%= element['donations'] %>/<%= element['donationsReceived'] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+  <% @resp['items'].each do |chest|%>
+          <ul>
+          <% if chest['name'] != 'Silver Chest' && chest['name'] != 'Golden Chest' %>
+            <li>prochain <%= chest['name'] %> dans <%= chest['index'] + 1 %> coffres</li>
+          <% end %>
+          </ul>
+        <% end %>
+  <% end %>
+<% end %>
+</div>
+
